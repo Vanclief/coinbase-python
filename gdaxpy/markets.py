@@ -1,14 +1,10 @@
 from gdaxpy.requester import Requester
 import gdaxpy.helpers as helpers
 
-TICKER_URL = "pubticker/"
-STATS_URL = "stats/"
-FUNDING_URL = "lendbook/"
-ORDERS_URL = "book/"
+TICKER_URL = "/ticker"
+ORDERS_URL = "/book?level=2"
 TRADES_URL = "trades/"
-LENDS_URL = "lends/"
-SYMBOLS_URL = "symbols"
-SYMBOL_DETAILS = "symbols_details"
+PRODUCTS_URL = "products/"
 
 
 class Market(object):
@@ -17,27 +13,55 @@ class Market(object):
         self.r = Requester(api_base)
 
     def get_ticker(self, symbol):
-        endpoint = TICKER_URL + symbol
+
+        product = helpers.separate_symbols(symbol)
+        endpoint = (PRODUCTS_URL + product + TICKER_URL)
         status, response = self.r.get(endpoint)
 
         if status != 200:
             return status, response
 
-        return status, helpers.dict_to_float(response)
+        ticker = {}
+        ticker['ask'] = float(response['ask'])
+        ticker['bid'] = float(response['bid'])
+        ticker['mid'] = ((ticker['ask'] + ticker['bid']) / 2)
+        ticker['last_price'] = float(response['price'])
+        ticker['low'] = float(0)
+        ticker['high'] = float(0)
+        ticker['volume'] = float(response['volume'])
+        ticker['timestamp'] = helpers.str_to_timestamp(response['time'])
+
+        return status, ticker
 
     def get_orderbook(self, symbol):
-        endpoint = ORDERS_URL + symbol
+
+        product = helpers.separate_symbols(symbol)
+        endpoint = (PRODUCTS_URL + product + ORDERS_URL)
         status, response = self.r.get(endpoint)
 
         if status != 200:
             return status, response
 
-        for order_type in response.keys():
-            for order in response[order_type]:
-                for key, value in order.items():
-                    order[key] = float(value)
+        order_book = {'asks': [], 'bids': []}
 
-        return status, response
+        for order_type in response.keys():
+            for value in response[order_type]:
+                # for value in values
+
+                print(value)
+                print(value[0])
+                print(value[1])
+                order = {}
+                order['price'] = float(value[0])
+                # order['amount'] = float(value[1])
+                # order['timestamp'] = float(value[2])
+
+                if order_type == 'asks':
+                    order_book['asks'].append(order)
+                elif order_type == 'bids':
+                    order_book['bids'].append(order)
+
+        return status, order_book
 
     def get_trades(self, symbol):
         endpoint = TRADES_URL + symbol

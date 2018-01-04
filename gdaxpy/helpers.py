@@ -1,3 +1,6 @@
+import calendar
+import datetime
+
 def dict_to_float(d):
     """
     Converts all strings to floats from a dict
@@ -22,19 +25,15 @@ def list_dict_to_float(l):
 
     return l
 
-def symbol_to_request(s):
+def separate_symbols(s):
     """
-    Converts from btcusd to ?pair=XBTUSD
+    Adds a dash to a symbol pair. btcusd -> btc-usd
     """
-    if s[:3] == 'btc':
-        s = 'XBT' + s[3:].upper()
-    return "?pair={0}".format(s)
+    return s[:3] + '-' + s[3:]
 
-def stringify_trade_type(s):
-    """
-    S -> Sell, B -> Buy
-    """
-    if s == 's':
-        return 'sell'
+def str_to_timestamp(s):
 
-    return 'buy'
+    d = datetime.datetime.strptime(s[:19], '%Y-%m-%dT%H:%M:%S')
+    epoch = float(calendar.timegm(d.utctimetuple()))
+
+    return epoch

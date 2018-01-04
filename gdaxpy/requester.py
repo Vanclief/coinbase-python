@@ -20,6 +20,7 @@ class Requester(object):
         """
 
         url = self._construct_url(endpoint)
+        print(url)
 
         r = requests.request("GET", url)
         status_code = r.status_code
