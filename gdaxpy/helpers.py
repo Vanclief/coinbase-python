@@ -31,6 +31,12 @@ def separate_symbols(s):
     """
     return s[:3] + '-' + s[3:]
 
+def join_symbols(s):
+    """
+    Removes a dash from a pair. btc-usd -> btcusd
+    """
+    return ((s[:3] + s[4:]).lower())
+
 def str_to_timestamp(s):
 
     d = datetime.datetime.strptime(s[:19], '%Y-%m-%dT%H:%M:%S')

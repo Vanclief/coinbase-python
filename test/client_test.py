@@ -10,7 +10,7 @@ def set_time_endpoint():
             '"epoch": 1420674445.201}'
             )
 
-    mock_url = client.api_base + '/time'
+    mock_url = client.api_base + 'time'
     mock_status = 200
 
     httpretty.register_uri(
@@ -76,7 +76,6 @@ def test_should_return_orderbook():
             )
     mock_url = client.api_base + 'products/btc-usd/book?level=2'
 
-    print(mock_url, 'Mock')
     mock_status = 200
 
     httpretty.register_uri(
@@ -88,14 +87,14 @@ def test_should_return_orderbook():
                 {
                     "price": 295.96,
                     "amount": 4.39088265,
-                    "timestamp": 1.0
+                    "timestamp": 1420674445.201
                     }
                 ],
             "asks": [
                 {
                     "price": 295.97,
                     "amount": 25.23542881,
-                    "timestamp": 1.0
+                    "timestamp": 1420674445.201
                     }
                 ]
             }
@@ -104,7 +103,6 @@ def test_should_return_orderbook():
     assert expected_response == response[1]
 
 
-"""
 @httpretty.activate
 def test_should_return_trades():
 
@@ -114,7 +112,7 @@ def test_should_return_trades():
             '"price": "10.00000000","size": "0.01000000","side": "buy"' +
             '}]'
             )
-    mock_url = client.api_base + 'btc-usd' + '/trades'
+    mock_url = client.api_base + 'products/btc-usd/trades'
     mock_status = 200
 
     httpretty.register_uri(
@@ -122,13 +120,17 @@ def test_should_return_trades():
             )
 
     expected_response = [
-            {"timestamp": 1444266681, "tid": 74, "price": 10.0,
-                "amount": 0.01, "exchange": "Gdax", "type": "buy"}
+            {
+                "timestamp": 1415398768.0,
+                "tid": 74,
+                "price": 10.0,
+                "amount": 0.01,
+                "exchange": "Gdax",
+                "type": "buy"}
             ]
 
     response = client.trades(mock_symbol)
     assert expected_response == response[1]
-
 
 @httpretty.activate
 def test_should_return_symbols():
@@ -150,7 +152,8 @@ def test_should_return_symbols():
             ',"margin_enabled":false,"status_message":null}]'
             )
 
-    mock_url = client.api_base + '/products'
+    mock_url = client.api_base + 'products/'
+    print(mock_url, 'Mock')
     mock_status = 200
 
     httpretty.register_uri(
@@ -181,7 +184,7 @@ def test_should_return_symbol_details():
             ',"display_name":"LTC/USD","status":"online"' +
             ',"margin_enabled":false,"status_message":null}]'
             )
-    mock_url = client.api_base + '/products'
+    mock_url = client.api_base + 'products/'
     mock_status = 200
 
     httpretty.register_uri(
@@ -210,4 +213,3 @@ def test_should_return_symbol_details():
             ]
     response = client.symbol_details()
     assert expected_response == response[1]
-"""
