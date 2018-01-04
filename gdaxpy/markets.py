@@ -54,7 +54,6 @@ class Market(object):
 
         timestamp = response['epoch']
 
-
         product = helpers.separate_symbols(symbol)
         endpoint = (PRODUCTS_URL + product + ORDERS_URL)
         status, response = self.r.get(endpoint)
@@ -141,6 +140,5 @@ class Market(object):
                     product['base_max_size'])
             symbol['expiration'] = 'NA'
             symbols.append(symbol)
-
 
         return status, symbols

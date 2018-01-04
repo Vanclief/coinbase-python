@@ -153,7 +153,6 @@ def test_should_return_symbols():
             )
 
     mock_url = client.api_base + 'products/'
-    print(mock_url, 'Mock')
     mock_status = 200
 
     httpretty.register_uri(
