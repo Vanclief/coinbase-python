@@ -64,8 +64,8 @@ class Market(object):
         order_book = {'asks': [], 'bids': []}
 
         for order_type, orders in response.items():
-            for value in orders:
-                if order_type in ['bids', 'asks']:
+            if order_type in ['bids', 'asks']:
+                for value in orders:
                     order = {}
                     order['price'] = float(value[0])
                     order['amount'] = float(value[1])

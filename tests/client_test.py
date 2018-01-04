@@ -71,8 +71,10 @@ def test_should_return_orderbook():
 
     mock_symbol = 'btcusd'
     mock_body = (
-            '{"sequence": "3","bids": [["295.96","4.39088265", 2 ]], ' +
-            '"asks":[["295.97", "25.23542881", 12 ]]}'
+            '{"sequence":4773845578,"bids":[["15049.76",' +
+            '"12.01358166",24],["15049.55","0.01",1]],' +
+            '"asks":[["15049.77","25.21244722",25],' +
+            '["15049.78","0.16119127",1]]}'
             )
     mock_url = client.api_base + 'products/btc-usd/book?level=2'
 
@@ -84,16 +86,27 @@ def test_should_return_orderbook():
 
     expected_response = {
             "bids": [
-                {
-                    "price": 295.96,
-                    "amount": 4.39088265,
+                    {
+                    "price": 15049.76,
+                    "amount": 12.01358166,
                     "timestamp": 1420674445.201
-                    }
+                    },
+                    {
+                    "price": 15049.55,
+                    "amount": 0.01,
+                    "timestamp": 1420674445.201
+                    },
+
                 ],
             "asks": [
                 {
-                    "price": 295.97,
-                    "amount": 25.23542881,
+                    "price": 15049.77,
+                    "amount": 25.21244722,
+                    "timestamp": 1420674445.201
+                    },
+                    {
+                    "price": 15049.78,
+                    "amount": 0.16119127,
                     "timestamp": 1420674445.201
                     }
                 ]
